@@ -123,12 +123,12 @@ with st.sidebar:
         "Budget (bewertete Nachbarn)", options=list(C.BUDGETS), key="budget_select", format_func=_fmt_int,
         help="Bei 10 / 25 / 50 / 100 / 200 Tausend / 0.5 / 1 / 2 Millionen liegt die beste Tour **287.75 / 155.09 / 54.73 / 8.53 / 3.39 / "
              "1.56 / 0.86 / 0.52 %** über der Schranke. Unter 100 Tausend praktisch identisch mit Tabu Search - erst ab 200 Tausend zieht "
-             "die dauerhafte Strafe klar davon, und der Vorsprung wächst mit jeder Budget-Verdopplung.",
+             "die dauerhafte Strafe klar davon, und der Abstand zur Schranke schrumpft mit jeder Budget-Verdopplung stärker als bei Tabu Search.",
     )
     start = st.radio(
         "Startlösung", list(C.START_LABELS), key="start_radio", format_func=lambda k: C.START_LABELS[k], horizontal=True,
         help="Zufällige Reihenfolge oder Nächster Nachbar. Wie bei Tabu Search zählt eine gute Startlösung sichtbar: bei nur rund "
-             "110-570 teuren Iterationen (200 Tausend Vorschläge) ist ein Vorsprung schwerer aufzuholen (1.09 % gegen 3.39 %).",
+             "110 teuren Iterationen (200 Tausend Vorschläge) ist ein Vorsprung schwerer aufzuholen (1.09 % gegen 3.39 %).",
     )
     seed = st.number_input("Zufalls-Seed der Instanz", *bounds("seed_input"), key="seed_input", step=1)
     st.button("🎲 Neue Instanz generieren", width="stretch", on_click=randomize_seed, help="Würfelt einen neuen Seed für die Lage der Stopps.")
@@ -295,7 +295,7 @@ if st.session_state.get("budget_on"):
     st.table({"Budget": [_fmt_int(r["value"]) for r in rows_b], "GLS (%)": [f"{r['gap']:.2f}" for r in rows_b], "Tabu (%)": [f"{r['tabu']:.2f}" for r in rows_b],
               "HC-Neustarts (%)": [f"{r['hcr']:.2f}" for r in rows_b], "ein Abstieg (%)": [f"{r['hc']:.2f}" for r in rows_b]})
     st.caption("Mittel über 5 feste Instanzen × 3 Ketten (60 Stopps, Lambda 5). Bei 10-50 Tausend Vorschlägen ist Guided Local Search mit Tabu Search NAHEZU IDENTISCH (beide bewerten die volle Nachbarschaft, bei so wenigen Iterationen hat die Strafe noch keine Gelegenheit zu wirken). "
-               "Ab 100 Tausend trennen sich die Kurven: bei 100 Tausend liegt Tabu Search noch knapp vorn, ab 200 Tausend zieht Guided Local Search klar davon und der Vorsprung wächst mit jeder Budget-Verdopplung (2 Millionen: 0.52 % gegen 1.9 %) - die dauerhafte Strafe verwertet zusätzliches Budget offenbar wirksamer als eine verfallende Sperre.")
+               "Ab 100 Tausend trennen sich die Kurven: bei 100 Tausend liegt Tabu Search noch knapp vorn, ab 200 Tausend zieht Guided Local Search klar davon und der Abstand zur Schranke schrumpft mit jeder Budget-Verdopplung stärker als bei Tabu Search (2 Millionen: 0.52 % gegen 1.9 %) - die dauerhafte Strafe verwertet zusätzliches Budget offenbar wirksamer als eine verfallende Sperre.")
 
 st.markdown("---")
 
@@ -369,6 +369,6 @@ Implementiert in `gls_algorithm.py` (die Suchschleife: erweiterte Zielfunktion, 
 st.markdown("---")
 st.caption(
     "Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – "
-    "Operations Research und Machine Learning. Interesse an einer maßgeschneiderten Lösung für "
-    "Ihr Unternehmen? [Kontakt aufnehmen](https://sebastianhanisch.net/kontakt.html)"
+    "Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). "
+    "Mehr zur Reihe: [Trajektorien-Metaheuristiken: HC bis ALNS](https://sebastianhanisch.net/konzepte-trajektorien-metaheuristiken.html)."
 )

@@ -65,7 +65,7 @@ PRESET_HELP = {
     "Zu kleine Strafe (Lambda 0.1)": "Eine zu schwache Strafe verhält sich fast wie ein einzelner Hill-Climbing-Abstieg: 7.74 % über der Schranke gegen 7.85 % - ohne wirksamen Druck bleibt die Suche im ersten lokalen Optimum hängen.",
     "Zu große Strafe (Lambda 30)": "Eine zu starke Strafe verzerrt die Suche zu sehr auf Vermeidung statt Kürze: 5.69 % über der Schranke, schlechter als die kalibrierten Lambda 5 (3.39 %), aber nicht katastrophal.",
     "Nächster Nachbar als Start": "Eine gute Startlösung hilft auch Guided Local Search sichtbar: 1.09 % über der Schranke gegen 3.39 % bei zufälliger Startlösung.",
-    "Großes Budget (1 Million)": "1 Million Vorschläge: 0.86 % über der Schranke - deutlich besser als Tabu Search bei gleichem Budget (2.31 %), der Vorsprung der dauerhaften Strafe wächst mit dem Budget.",
+    "Großes Budget (1 Million)": "1 Million Vorschläge: 0.86 % über der Schranke - deutlich besser als Tabu Search bei gleichem Budget (2.31 %), der Abstand zur Schranke schrumpft mit dem Budget stärker als bei Tabu Search.",
     "Große Instanz (200 Stopps, 1 Million)": "200 Stopps: jede Iteration kostet rund 20 Tausend Bewertungen (n²/2), 1 Million Vorschläge reichen nur für rund 50 Iterationen - die Suche kommt praktisch nicht voran (306.74 % über der Schranke), exakt wie Tabu Search bei gleichem Budget (306.74 %).",
 }
 # Urteile, die bei diesem Preset über verschiedene Instanzen und Ketten-Seeds vorkommen (jedes Preset wird über mehrere Instanzen x mehrere Ketten gemessen)
