@@ -1,11 +1,11 @@
 # Guided Local Search – eine Lieferrunde, die unliebsame Kanten teurer macht – Streamlit-Demo
 
-**[→ Demo live ausprobieren](#) (Deploy offen)**
+**[→ Demo live ausprobieren](https://sebastianhanisch-guided-local-search-demo.streamlit.app/)**
 
 Zwölftes Stück der **Trajektorien-Metaheuristiken-Linie** der "Konzepte"-Reihe für die Website "Sebastian Hanisch – Operations Research und Machine Learning":
 dieselbe Rundtour wie in der [hill-climbing-demo](https://sebastianhanisch-hill-climbing-demo.streamlit.app/) und der [tabu-search-demo](https://sebastianhanisch-tabu-search-demo.streamlit.app/) (ein Depot, n Kundenstopps in einem 100 × 100-km-Gebiet), dieselbe untere Schranke, dieselbe volle-2-opt-Nachbarschaft und dieselbe Bewertungs-Zählweise wie Tabu Search.
 
-**Einordnung in die Reihe:** **Guided Local Search** (Voudouris & Tsang 1999) ist ein direktes Kind von Hill Climbing, wie Simulated Annealing, ILS/VNS, Tabu Search und GRASP - und der direkte **Kontrast** zu Tabu Search: dasselbe Problem (über ein lokales Optimum hinauskommen, ohne Struktur wegzuwerfen), der entgegengesetzte Mechanismus. Tabu Search verbietet die zuletzt entfernten Kanten für eine feste Zahl Iterationen (Gedächtnis, das **verfällt**). Guided Local Search bestraft stattdessen Tourkanten in der Zielfunktion selbst (`Länge + λ · Strafen`) - eine Strafe, die **nie verfällt**. Googles OR-Tools-Routing-Solver nutzt genau dieses Verfahren als Standard-Metaheuristik für Fahrzeugrouting.
+**Einordnung in die Reihe:** **Guided Local Search** (Voudouris & Tsang 1999) ist ein direktes Kind von Hill Climbing, wie Simulated Annealing, ILS/VNS, Tabu Search und GRASP - und der direkte **Kontrast** zu Tabu Search: dasselbe Problem (über ein lokales Optimum hinauskommen, ohne Struktur wegzuwerfen), der entgegengesetzte Mechanismus. Tabu Search verbietet die zuletzt entfernten Kanten für eine feste Zahl Iterationen (Gedächtnis, das **verfällt**). Guided Local Search bestraft stattdessen Tourkanten in der Zielfunktion selbst (`Länge + λ · Strafen`) - eine Strafe, die **nie verfällt**. Googles OR-Tools-Routing-Solver bietet dieses Verfahren als wählbare Metaheuristik für Fahrzeugrouting an und beschreibt es in der Dokumentation als meist die wirksamste.
 ```
 hill-climbing-demo (Wurzel: nur bergab, bleibt im ersten Optimum stecken)        [gebaut]
   ├─ simulated-annealing-demo (nimmt Verschlechterungen an, Abkühlplan)          [gebaut]

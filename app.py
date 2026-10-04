@@ -64,7 +64,7 @@ statt Kanten für eine feste Zahl Iterationen zu **verbieten** (Gedächtnis, das
 die nie verfällt: die Suche läuft auf einer **erweiterten** Zielfunktion `Länge + λ · Strafen`. Findet sie dort keinen
 verbessernden Zug mehr, wird die Kante mit dem höchsten Nutzen (Länge geteilt durch 1 + Strafe) unter den aktuellen Tourkanten
 bestraft – die Zielfunktion ändert sich, die Suche findet einen neuen Zug. Die **beste** Tour wird immer anhand der echten,
-unveränderten Länge verfolgt. Googles OR-Tools-Routing-Solver nutzt genau dieses Verfahren als Standard-Metaheuristik.
+unveränderten Länge verfolgt. Googles OR-Tools-Routing-Solver bietet dieses Verfahren als wählbare Metaheuristik an und beschreibt es in der Dokumentation als meist die wirksamste für Tourenplanung.
 """
 )
 st.caption(
