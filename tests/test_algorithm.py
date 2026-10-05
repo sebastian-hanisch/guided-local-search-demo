@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 import gls_algorithm as GLS
+import gls_tabu_algorithm as TABU
 import gls_tour as T
 
 
@@ -137,3 +138,32 @@ def test_penalty_never_decreases():
     r = GLS.run(D, start, lam=1.0, budget=6000, debug_trace=True)
     assert r.penalizations >= 0
     assert r.penalizations == sum(1 for (_, _, was_penalty) in r.debug if was_penalty)
+
+
+def _expected_trace_axis(per_iteration, budget, trace_points=300):
+    """Unabhängig aus der Definition: Verlaufspunkt bei Bewertungsstand 0, danach in der ersten Iteration, die die nächste Vielfachen-Schwelle
+    (alle budget // trace_points BEWERTETE Nachbarn) erreicht, und in der letzten Iteration."""
+    every = max(1, budget // trace_points)
+    xs, ev, threshold = [0], 0, every
+    while ev < budget:
+        ev += per_iteration
+        if ev >= threshold or ev >= budget:
+            xs.append(ev)
+            threshold = (ev // every + 1) * every
+    return xs
+
+
+@pytest.mark.parametrize("module, kwargs", [(GLS, {"lam": 0.5}), (TABU, {"tenure": 5})])
+@pytest.mark.parametrize("n, budget", [(10, 30000), (20, 30000), (40, 100000)])
+def test_the_trace_is_recorded_per_evaluated_neighbours_not_per_iteration(module, kwargs, n, budget):
+    """Die Achse heißt "Bewertete Nachbarn": der Verlauf muss alle budget // 300 BEWERTUNGEN einen Punkt tragen. Alle 333 ITERATIONEN
+    (alter Stand) blieben bei n = 40 und Budget 100000 nur 2 Punkte statt rund 100 übrig."""
+    D = _instance(n, 7)
+    start = T.random_tour(n, np.random.default_rng(3))
+    r = module.run(D, start, budget=budget, keep_snapshots=False, **kwargs)
+    per_iteration = r.evaluations // r.iterations
+    assert per_iteration * r.iterations == r.evaluations                 # jede Iteration bewertet gleich viele Paare
+    assert r.trace_iter.tolist() == _expected_trace_axis(per_iteration, budget)
+    assert len(r.trace_length) == len(r.trace_best) == len(r.trace_iter) and r.trace_iter[-1] == r.evaluations
+    assert len(r.trace_iter) >= min(r.iterations + 1, 150)               # nicht nur 2 bis 5 Punkte
+    assert np.all(np.diff(r.trace_best) <= 1e-9)                         # beste Länge fällt nur

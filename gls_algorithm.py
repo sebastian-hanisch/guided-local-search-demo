@@ -59,8 +59,9 @@ def run(D, start, lam=0.3, budget=100000, keep_snapshots=True, trace_points=300,
     evaluations = iterations = penalizations = 0
     snapshots = [t.copy()] if keep_snapshots else []
     debug = []
-    trace_every = max(1, budget // trace_points)
+    trace_every = max(1, budget // trace_points)               # Abstand der Verlaufspunkte in BEWERTETEN NACHBARN (nicht in Iterationen: eine Iteration kostet n²/2 Bewertungen)
     tr_it, tr_len, tr_best = [0], [length], [length]
+    next_trace = trace_every
 
     while evaluations < budget:
         delta, valid = T._delta_2opt(t, D)
@@ -96,10 +97,11 @@ def run(D, start, lam=0.3, budget=100000, keep_snapshots=True, trace_points=300,
 
         if keep_snapshots:
             snapshots.append(t.copy())
-        if iterations % trace_every == 0 or evaluations >= budget:
+        if evaluations >= next_trace or evaluations >= budget:
             tr_it.append(evaluations)
             tr_len.append(length)
             tr_best.append(best_length)
+            next_trace = (evaluations // trace_every + 1) * trace_every
 
     final_length = T.tour_length(t, D)                         # Rundungsfehler der Delta-Summen beseitigen
     best_length = T.tour_length(best_tour, D)
